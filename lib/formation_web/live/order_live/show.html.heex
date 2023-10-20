@@ -1,0 +1,30 @@
+<.header>
+  Order <%= @order.id %>
+  <:subtitle>This is a order record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/orders/#{@order}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @order.name %></:item>
+  <:item title="Customer"><%= @order.customer %></:item>
+  <:item title="Price"><%= @order.price %></:item>
+  <:item title="Status"><%= @order.status %></:item>
+  <:item title="Items"><%= @order.items %></:item>
+</.list>
+
+<.back navigate={~p"/orders"}>Back to orders</.back>
+
+<.modal :if={@live_action == :edit} id="order-modal" show on_cancel={JS.patch(~p"/orders/#{@order}")}>
+  <.live_component
+    module={FormationWeb.OrderLive.FormComponent}
+    id={@order.id}
+    title={@page_title}
+    action={@live_action}
+    order={@order}
+    patch={~p"/orders/#{@order}"}
+  />
+</.modal>
