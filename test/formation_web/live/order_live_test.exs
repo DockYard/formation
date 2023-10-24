@@ -4,8 +4,20 @@ defmodule FormationWeb.OrderLiveTest do
   import Phoenix.LiveViewTest
   import Formation.DeliFixtures
 
-  @create_attrs %{name: "some name", status: :draft, items: "some items", customer: "some customer", price: 120.5}
-  @update_attrs %{name: "some updated name", status: :pending, items: "some updated items", customer: "some updated customer", price: 456.7}
+  @create_attrs %{
+    name: "some name",
+    status: :draft,
+    items: "some items",
+    customer: "some customer",
+    price: 120.5
+  }
+  @update_attrs %{
+    name: "some updated name",
+    status: :pending,
+    items: "some updated items",
+    customer: "some updated customer",
+    price: 456.7
+  }
   @invalid_attrs %{name: nil, status: nil, items: nil, customer: nil, price: nil}
 
   defp create_order(_) do

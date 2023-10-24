@@ -33,7 +33,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="order-modal" show on_cancel={JS.patch(~p"/orders")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="order-modal"
+  show
+  on_cancel={JS.patch(~p"/orders")}
+>
   <.live_component
     module={FormationWeb.OrderLive.FormComponent}
     id={@order.id || :new}

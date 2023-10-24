@@ -3,7 +3,7 @@ defmodule Formation.Deli.Item do
   import Ecto.Changeset
   alias Formation.Deli.Item
 
-  embedded_schema do 
+  embedded_schema do
     field :name, :string
     field :price, :float
     field :quantity, :integer
