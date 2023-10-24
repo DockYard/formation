@@ -1,21 +1,24 @@
 defmodule Formation.Deli.Order do
   use Ecto.Schema
   import Ecto.Changeset
-
+  @permitted [:name, :customer, :price, :status]
+  @required [:name, :customer]
   schema "orders" do
     field :name, :string
     field :status, Ecto.Enum, values: [:draft, :pending, :completed, :canceled]
-    field :items, :string
     field :customer, :string
     field :price, :float
 
-    timestamps(type: :utc_datetime)
+    embeds_many :items, Formation.Deli.Item, on_replace: :delete
+
+    timestamps()
   end
 
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:name, :customer, :price, :status, :items])
-    |> validate_required([:name, :customer, :price, :status, :items])
+    |> cast(attrs, @permitted)
+    |> cast_embed(:items)
+    |> validate_required(@required)
   end
 end
