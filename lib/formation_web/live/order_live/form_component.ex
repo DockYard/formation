@@ -33,13 +33,21 @@ defmodule FormationWeb.OrderLive.FormComponent do
         <% # Items %>
         <h2 class="pt-4 text-lg font-medium text-gray-900">Items</h2>
         <div class="mt-2 flex flex-col">
-          <%= Form.inputs_for @form, :items, fn item_f -> %>
+          <.inputs_for :let={item_f} field={@form[:items]}>
             <div class="mt-2 flex items-center justify-between gap-6">
               <.input field={item_f[:name]} type="text" label="Name" />
               <.input field={item_f[:price]} type="number" label="Price" step="any" />
               <.input field={item_f[:quantity]} type="number" label="Quantity" />
+              <label>
+                <input type="checkbox" name="order[items_drop][]" value={item_f.index} class="hidden" />
+                <.icon
+                  name="hero-x-mark"
+                  class="w-8 h-8 relative top-4 bg-red-500 hover:bg-red-900 hover:cursor-pointer"
+                />
+              </label>
             </div>
-          <% end %>
+          </.inputs_for>
+          <input type="hidden" name="order[items_drop][]" />
         </div>
         <:actions>
           <.button phx-click="add_item" phx-target={@myself} type="button">Add Item</.button>
