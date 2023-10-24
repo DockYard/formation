@@ -2,6 +2,7 @@ defmodule FormationWeb.OrderLive.FormComponent do
   use FormationWeb, :live_component
 
   alias Formation.Deli
+  alias Phoenix.HTML.Form
 
   @impl true
   def render(assigns) do
@@ -9,7 +10,7 @@ defmodule FormationWeb.OrderLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage order records in your database.</:subtitle>
+        <:subtitle>Formation Deli Order Form</:subtitle>
       </.header>
 
       <.simple_form
@@ -29,7 +30,17 @@ defmodule FormationWeb.OrderLive.FormComponent do
           prompt="Choose a value"
           options={Ecto.Enum.values(Formation.Deli.Order, :status)}
         />
-        <.input field={@form[:items]} type="text" label="Items" />
+        <% # Items %>
+        <h2 class="pt-4 text-lg font-medium text-gray-900">Items</h2>
+        <div class="mt-2 flex flex-col">
+          <%= Form.inputs_for @form, :items, fn item_f -> %>
+            <div class="mt-2 flex items-center justify-between gap-6">
+              <.input field={item_f[:name]} type="text" label="Name" />
+              <.input field={item_f[:price]} type="number" label="Price" step="any" />
+              <.input field={item_f[:quantity]} type="number" label="Quantity" />
+            </div>
+          <% end %>
+        </div>
         <:actions>
           <.button phx-disable-with="Saving...">Save Order</.button>
         </:actions>
