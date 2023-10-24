@@ -2,7 +2,6 @@ defmodule FormationWeb.OrderLive.FormComponent do
   use FormationWeb, :live_component
 
   alias Formation.Deli
-  alias Phoenix.HTML.Form
 
   @impl true
   def render(assigns) do
@@ -35,6 +34,7 @@ defmodule FormationWeb.OrderLive.FormComponent do
         <div class="mt-2 flex flex-col">
           <.inputs_for :let={item_f} field={@form[:items]}>
             <div class="mt-2 flex items-center justify-between gap-6">
+              <input type="hidden" name="order[items_sort][]" value={item_f.index} />
               <.input field={item_f[:name]} type="text" label="Name" />
               <.input field={item_f[:price]} type="number" label="Price" step="any" />
               <.input field={item_f[:quantity]} type="number" label="Quantity" />
@@ -42,17 +42,22 @@ defmodule FormationWeb.OrderLive.FormComponent do
                 <input type="checkbox" name="order[items_drop][]" value={item_f.index} class="hidden" />
                 <.icon
                   name="hero-x-mark"
-                  class="w-8 h-8 relative top-4 bg-red-500 hover:bg-red-900 hover:cursor-pointer"
+                  class="w-8 h-8 relative top-4 bg-red-500 hover:bg-red-700 hover:cursor-pointer"
                 />
               </label>
             </div>
           </.inputs_for>
-          <input type="hidden" name="order[items_drop][]" />
         </div>
         <:actions>
-          <.button phx-click="add_item" phx-target={@myself} type="button">Add Item</.button>
+          <label class={[
+            "py-2 px-3 inline-block cursor-pointer bg-green-500 hover:bg-green-700",
+            "rounded-lg text-center text-white text-sm font-semibold leading-6"
+          ]}>
+            <input type="checkbox" name="order[items_sort][]" class="hidden" /> Add Item
+          </label>
           <.button phx-disable-with="Saving...">Save Order</.button>
         </:actions>
+        <input type="hidden" name="order[items_drop][]" />
       </.simple_form>
     </div>
     """
@@ -80,14 +85,6 @@ defmodule FormationWeb.OrderLive.FormComponent do
 
   def handle_event("save", %{"order" => order_params}, socket) do
     save_order(socket, socket.assigns.action, order_params)
-  end
-
-  def handle_event("add_item", _, socket) do
-    changeset = socket.assigns.form.source
-    items = Ecto.Changeset.get_embed(changeset, :items)
-    new_changeset = Ecto.Changeset.put_embed(changeset, :items, items ++ [%{}])
-
-    {:noreply, assign_form(socket, new_changeset)}
   end
 
   defp save_order(socket, :edit, order_params) do

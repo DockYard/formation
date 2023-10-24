@@ -18,7 +18,10 @@ defmodule Formation.Deli.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, @permitted)
-    |> cast_embed(:items, drop_param: :items_drop)
+    |> cast_embed(:items,
+      sort_param: :items_sort,
+      drop_param: :items_drop
+    )
     |> validate_required(@required)
   end
 end
