@@ -11,11 +11,11 @@ defmodule Formation.DeliFixtures do
     {:ok, order} =
       attrs
       |> Enum.into(%{
-        customer: "some customer",
-        items: "some items",
         name: "some name",
-        price: 120.5,
-        status: :draft
+        status: :draft,
+        items: [],
+        customer: "some customer",
+        price: 120.5
       })
       |> Formation.Deli.create_order()
 

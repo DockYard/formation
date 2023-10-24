@@ -24,7 +24,7 @@ defmodule Formation.DeliTest do
       valid_attrs = %{
         name: "some name",
         status: :draft,
-        items: "some items",
+        items: [],
         customer: "some customer",
         price: 120.5
       }
@@ -32,7 +32,7 @@ defmodule Formation.DeliTest do
       assert {:ok, %Order{} = order} = Deli.create_order(valid_attrs)
       assert order.name == "some name"
       assert order.status == :draft
-      assert order.items == "some items"
+      assert order.items == []
       assert order.customer == "some customer"
       assert order.price == 120.5
     end
@@ -47,7 +47,7 @@ defmodule Formation.DeliTest do
       update_attrs = %{
         name: "some updated name",
         status: :pending,
-        items: "some updated items",
+        items: [],
         customer: "some updated customer",
         price: 456.7
       }
@@ -55,7 +55,7 @@ defmodule Formation.DeliTest do
       assert {:ok, %Order{} = order} = Deli.update_order(order, update_attrs)
       assert order.name == "some updated name"
       assert order.status == :pending
-      assert order.items == "some updated items"
+      assert order.items == []
       assert order.customer == "some updated customer"
       assert order.price == 456.7
     end
