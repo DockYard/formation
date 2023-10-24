@@ -42,6 +42,7 @@ defmodule FormationWeb.OrderLive.FormComponent do
           <% end %>
         </div>
         <:actions>
+          <.button phx-click="add_item" phx-target={@myself} type="button">Add Item</.button>
           <.button phx-disable-with="Saving...">Save Order</.button>
         </:actions>
       </.simple_form>
@@ -71,6 +72,14 @@ defmodule FormationWeb.OrderLive.FormComponent do
 
   def handle_event("save", %{"order" => order_params}, socket) do
     save_order(socket, socket.assigns.action, order_params)
+  end
+
+  def handle_event("add_item", _, socket) do
+    changeset = socket.assigns.form.source
+    items = Ecto.Changeset.get_embed(changeset, :items)
+    new_changeset = Ecto.Changeset.put_embed(changeset, :items, items ++ [%{}])
+
+    {:noreply, assign_form(socket, new_changeset)}
   end
 
   defp save_order(socket, :edit, order_params) do
